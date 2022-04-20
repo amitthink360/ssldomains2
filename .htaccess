@@ -6,7 +6,7 @@ RewriteRule !/$ %{REQUEST_URI}/ [L,R=301]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 
-RewriteRule ^(.*)$ index.php?phone=$1 [NC]
+RewriteRule ^(.*)$ index.php?params=$1 [NC, QSA]
 RewriteRule ^([^/]+)/([^/]+)/([^/]+)/?$ index.php?phone=$1&vrh=$2&cdv=$3 [L,QSA]
 
 RewriteRule ^([^/]+)/([^/]+)/?$ index.php?phone=$1&vrh=$2 [L,QSA]

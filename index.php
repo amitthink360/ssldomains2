@@ -40,7 +40,7 @@ $res = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $parms = explode("/",$res);
 echo"<pre/>";print_r($parms);
-
+echo"<pre/>";print_r(array_filter($parms, fn($value) => !is_null($value) && $value !== ''));
 die;
 try {
 	$sql = "INSERT INTO clicker_phone (phone,date_added) values (?,?)";

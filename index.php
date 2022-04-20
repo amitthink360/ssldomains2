@@ -36,7 +36,11 @@ $pdo = Database::connect();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 echo"<pre/>";print_r($_GET);
 $res = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-echo"<pre/>";print_r($res);
+
+
+$parms = explode("/",$res);
+echo"<pre/>";print_r($parms);
+
 die;
 try {
 	$sql = "INSERT INTO clicker_phone (phone,date_added) values (?,?)";

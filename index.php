@@ -34,7 +34,7 @@ class Database
 
 $pdo = Database::connect();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+echo"<pre/>";print_r($_GET);
 try {
 	$sql = "INSERT INTO clicker_phone (phone,date_added) values (?,?)";
 	$q = $pdo->prepare($sql);

@@ -34,25 +34,18 @@ class Database
 
 $pdo = Database::connect();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-echo"<pre/>";print_r($_GET);
-$res = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+$current = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$variables = explode("/",$current);
 
-$parms = explode("/",$res);
-echo"<pre/>";print_r($parms);
-echo"<pre/>";print_r(array_filter($parms, fn($value) => !is_null($value) && $value !== ''));
-die;
 try {
 	$sql = "INSERT INTO clicker_phone (phone,date_added) values (?,?)";
 	$q = $pdo->prepare($sql);
-	$q->execute(array($_GET['phone'],date('Y-m-d H:i:s')));
-	
-	echo $_GET['phone']; die;
-	
+	$q->execute(array($variables[1],date('Y-m-d H:i:s')));
 }catch(Exception $e) {
-	echo 'Message: ' .$e->getMessage(); die;
+	//echo 'Message: ' .$e->getMessage();
 }
-die;
+
 $domain = $_SERVER['HTTP_HOST'];
 $clist_sql = "SELECT wildcard_url FROM `ssl_domains` WHERE `domain_name` = ?";
 $result_clist = $pdo->prepare($clist_sql);
@@ -60,7 +53,8 @@ $result_clist->execute(array($domain));
 $list = $result_clist->fetch();
 
 if(isset($list['wildcard_url'])){
-	$queryString =  http_build_query($_GET);
+	$parms = array_filter($variables, fn($value) => !is_null($value) && $value !== '');
+	$queryString = implode("&",$parms);
 	if (strpos($list['wildcard_url'], '?') == false) {
 		$redirect_link = $list['wildcard_url']."?".$queryString;
 	}elseif (strpos($list['wildcard_url'], '&') !== false) {
